@@ -1,0 +1,21 @@
+@model CryptViewModel
+<div class="forms">
+      <h2 class="header">Дешифратор</h2>
+      <form method="post" asp-action="Decrypt">
+            <div class="forms_field">
+                  <label asp-for="Source">Зашифрованая строка:</label>
+                  <input asp-for="Source" />
+            </div>
+            <div class="forms_field">
+                  <label asp-for="Key">Ключ:</label>
+                  <input asp-for="Key" />
+            </div>
+            <div class="forms_field">
+                  <button type="submit">Расшифровать</button>
+            </div>  
+      </form>
+      <div class="message">
+            Расшифрованное сообщение:<br>
+            @ViewData["Message"]
+      </div>
+</div>
