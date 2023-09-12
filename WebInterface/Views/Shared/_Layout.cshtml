@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" charset="utf-8"/>
+        <link rel="stylesheet" href="~/css/style.css" type="text/css" />
+        <title>InfoProtection</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="menu">
+                <h2 class="header">Меню</h2>
+                <div class="menu_item"><a asp-controller="Lab1" asp-action="Encrypt">Зашифровать сообщение шифром Вижинера</a></div>
+                <div class="menu_item"><a asp-controller="Lab1" asp-action="Decrypt">Расшифровать сообщение закодированное шифром Вижинера</a></div>
+                <div class="menu_item"><a asp-controller="Lab2" asp-action="Encrypt">Зашифровать сообщение методом RSA</a></div>
+                <div class="menu_item"><a asp-controller="Lab2" asp-action="Decrypt">Расшифровать сообщение методом RSA</a></div>
+            </div>
+            @RenderBody()
+        </div>        
+    </body>
+</html> 
