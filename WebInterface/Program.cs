@@ -7,9 +7,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<ICryptService, VigenereCryptService>();
-builder.Services.AddScoped<IAsymmetricCryptService, RsaCryptService>();
+builder.Services.AddScoped<IRsaService, RsaCryptService>();
 var app = builder.Build();
-
+app.UseDeveloperExceptionPage();
 app.UseStaticFiles();
 app.MapControllerRoute(
     name: "default",

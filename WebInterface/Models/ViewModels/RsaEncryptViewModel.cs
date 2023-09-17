@@ -1,5 +1,5 @@
 namespace WebInterface.Models.ViewModels;
-public class AsymmetricEncryptViewModel
+public class RsaEncryptViewModel
 {
       public string Source { get; set; } = null!;
 }

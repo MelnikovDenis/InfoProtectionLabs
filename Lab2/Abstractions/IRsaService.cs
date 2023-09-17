@@ -1,7 +1,7 @@
 using System.Numerics;
 
 namespace Lab2.Abstractions;
-public interface IAsymmetricCryptService
+public interface IRsaService
 {
       public (BigInteger, BigInteger) PublicKey { get; }
       public (BigInteger, BigInteger) PrivateKey { get; }

@@ -7,8 +7,8 @@ namespace WebInterface.Controllers;
 
 public class Lab2Controller : Controller
 {
-      private IAsymmetricCryptService _cryptService { get; }
-      public Lab2Controller(IAsymmetricCryptService cryptService)
+      private IRsaService _cryptService { get; }
+      public Lab2Controller(IRsaService cryptService)
       {
             _cryptService = cryptService;
       }
@@ -18,7 +18,7 @@ public class Lab2Controller : Controller
       [HttpGet]
       public IActionResult Decrypt() => View();
       [HttpPost]
-      public IActionResult Encrypt(AsymmetricEncryptViewModel viewModel)
+      public IActionResult Encrypt(RsaEncryptViewModel viewModel)
       {
             ViewData["Cipher"] = _cryptService.Encrypt(viewModel.Source);
             ViewData["PublicKey"] = _cryptService.PublicKey;
@@ -27,7 +27,7 @@ public class Lab2Controller : Controller
       }
       
       [HttpPost]
-      public IActionResult Decrypt(AsymmetricDecryptViewModel viewModel)
+      public IActionResult Decrypt(RsaDecryptViewModel viewModel)
       {
             var Cipher = viewModel.Cipher
                   .Split(' ', StringSplitOptions.RemoveEmptyEntries)

@@ -9,10 +9,17 @@
         <div class="container">
             <div class="menu">
                 <h2 class="header">Меню</h2>
-                <div class="menu_item"><a asp-controller="Lab1" asp-action="Encrypt">Зашифровать сообщение шифром Вижинера</a></div>
-                <div class="menu_item"><a asp-controller="Lab1" asp-action="Decrypt">Расшифровать сообщение закодированное шифром Вижинера</a></div>
-                <div class="menu_item"><a asp-controller="Lab2" asp-action="Encrypt">Зашифровать сообщение методом RSA</a></div>
-                <div class="menu_item"><a asp-controller="Lab2" asp-action="Decrypt">Расшифровать сообщение методом RSA</a></div>
+                <div class=menu_group>
+                    <h3>Lab1</h3>
+                    <div class="menu_item"><a asp-controller="Lab1" asp-action="Encrypt">Зашифровать сообщение шифром Вижинера</a></div>
+                    <div class="menu_item"><a asp-controller="Lab1" asp-action="Decrypt">Расшифровать сообщение закодированное шифром Вижинера</a></div>
+                </div>
+                <div class=menu_group>
+                    <h3>Lab2</h3>
+                    <div class="menu_item"><a asp-controller="Lab2" asp-action="Encrypt">Зашифровать сообщение методом RSA</a></div>
+                    <div class="menu_item"><a asp-controller="Lab2" asp-action="Decrypt">Расшифровать сообщение методом RSA</a></div>
+                </div>
+                
             </div>
             @RenderBody()
         </div>        

@@ -4,7 +4,7 @@ using Lab2.Abstractions;
 
 namespace Lab2.Implementations;
 
-public class RsaCryptService : IAsymmetricCryptService
+public class RsaCryptService : IRsaService
 {
     /// <summary>
     /// Публичный ключ (e, n)

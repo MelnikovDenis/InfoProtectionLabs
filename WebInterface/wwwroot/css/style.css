@@ -12,6 +12,13 @@
 .menu{
     margin: 0 5%;
 }
+.menu_group{
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    padding: 1em;
+    margin: 1em 0;
+}
 .menu_item
 {
     margin: 1em 0;
