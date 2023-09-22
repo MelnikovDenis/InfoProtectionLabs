@@ -1,5 +1,6 @@
 using System.Numerics;
 using System.Text;
+using MathLib;
 using Lab2.Abstractions;
 
 namespace Lab2.Implementations;
@@ -60,8 +61,8 @@ public class RsaCryptService : IRsaService
     /// </summary>
     private void GenerateParameters()
     {
-        BigInteger p = new BigInteger(PrimeNumberGenerator.GetRandomPrime());
-        BigInteger q = new BigInteger(PrimeNumberGenerator.GetRandomPrime());
+        BigInteger p = PrimeNumberGenerator.GetRandomPrime();
+        BigInteger q = PrimeNumberGenerator.GetRandomPrime();
         BigInteger n = p * q;
         //нахождение значения функции эйлера
         BigInteger N = (p - BigInteger.One) * (q - BigInteger.One);
@@ -69,7 +70,7 @@ public class RsaCryptService : IRsaService
         BigInteger e;
         do
         {
-            e = new BigInteger(PrimeNumberGenerator.GetRandomPrime());
+            e = PrimeNumberGenerator.GetRandomPrime();
         } while (N % e == BigInteger.Zero || e >= n);
 
         BigInteger d = ModInverse(e, N);
