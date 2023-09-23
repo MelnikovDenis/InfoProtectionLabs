@@ -1,14 +1,16 @@
-using Lab1.Abstractions;
-using Lab1.Implementations;
-using Lab2.Abstractions;
-using Lab2.Implementations;
-
+using Services.Lab1;
+using Services.Lab2;
+using Services.Lab3;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<ICryptService, VigenereCryptService>();
-builder.Services.AddScoped<IRsaService, RsaCryptService>();
+
+builder.Services.AddTransient<VigenereCryptService, VigenereCryptService>();
+builder.Services.AddTransient<RsaCryptService, RsaCryptService>();
+builder.Services.AddTransient<ElGamalCryptService, ElGamalCryptService>();
+
 var app = builder.Build();
+
 app.UseDeveloperExceptionPage();
 app.UseStaticFiles();
 app.MapControllerRoute(

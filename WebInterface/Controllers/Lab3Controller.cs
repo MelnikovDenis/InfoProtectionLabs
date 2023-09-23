@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using WebInterface.Models.ViewModels;
-using Services.Lab2;
+using Services.Lab3;
 using System.Numerics;
 
 namespace WebInterface.Controllers;
 
-public class Lab2Controller : Controller
+public class Lab3Controller : Controller
 {
-      private RsaCryptService _cryptService { get; }
-      public Lab2Controller(RsaCryptService cryptService)
+      private ElGamalCryptService _cryptService { get; }
+      public Lab3Controller(ElGamalCryptService cryptService)
       {
             _cryptService = cryptService;
       }
@@ -18,23 +18,23 @@ public class Lab2Controller : Controller
       [HttpGet]
       public IActionResult Decrypt() => View();
       [HttpPost]
-      public IActionResult Encrypt(RsaEncryptViewModel viewModel)
+      public IActionResult Encrypt(ElGamalEncryptViewModel viewModel)
       {
             _cryptService.GenerateParameters();
-            ViewData["Cipher"] = RsaCryptService.Encrypt(viewModel.Source, _cryptService.PublicKey);
+            ViewData["Cipher"] = ElGamalCryptService.Encrypt(viewModel.Source, _cryptService.PublicKey);
             ViewData["PublicKey"] = _cryptService.PublicKey;
             ViewData["PrivateKey"] = _cryptService.PrivateKey;
             return View();
       }
       
       [HttpPost]
-      public IActionResult Decrypt(RsaDecryptViewModel viewModel)
+      public IActionResult Decrypt(ElGamalDecryptViewModel viewModel)
       {
             var Cipher = viewModel.Cipher
                   .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                   .Select(x => BigInteger.Parse(x))
                   .ToList();
-            ViewData["Message"] =  RsaCryptService.Decrypt(Cipher, (viewModel.d, viewModel.n));
+            ViewData["Message"] = ElGamalCryptService.Decrypt(Cipher, (viewModel.p, viewModel.x, viewModel.r));
             return View();
       }
       

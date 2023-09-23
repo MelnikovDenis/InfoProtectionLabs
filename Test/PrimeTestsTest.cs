@@ -1,14 +1,14 @@
-using MathLib;
+using Services.Static;
 using System.Numerics;
 namespace Test;
 
 [TestClass]
-public class PrimeNumberGeneratorTest
+public class PrimeTestTest
 {
+      private Random rnd { get; set; } = new Random();
       [TestMethod]
       public void FermatTestTrueTest()
       {
-            var rnd = new Random();
             var primeNumbers = new List<BigInteger>()
             {
                   BigInteger.Parse("162259276829213363391578010288127"),
@@ -28,13 +28,12 @@ public class PrimeNumberGeneratorTest
             };
             foreach (var primeNumber in primeNumbers)
             {
-                  Assert.IsTrue(PrimeNumberGenerator.FermatTest(primeNumber));
+                  Assert.IsTrue(PrimeTests.FermatTest(rnd, primeNumber));
             }       
       }
       [TestMethod]
       public void FermatTestFalseTest()
       {
-            var rnd = new Random();
             var primeNumbers = new List<BigInteger>()
             {
                   BigInteger.Parse("162259276829213363391578010288128"),
@@ -52,17 +51,8 @@ public class PrimeNumberGeneratorTest
             };
             foreach (var primeNumber in primeNumbers)
             {
-                  Assert.IsFalse(PrimeNumberGenerator.FermatTest(primeNumber));
+                  Assert.IsFalse(PrimeTests.FermatTest(rnd, primeNumber));
             }       
       }
-      [TestMethod]
-      public void GetRandomPrimeTest()
-      {
-            for(int i = 0; i < 100; ++i)
-            {
-                  var value = PrimeNumberGenerator.GetRandomPrime(20);
-                  int digits = value.ToString().Length;
-                  Assert.AreEqual(digits, 20);
-            }
-      }
+     
 }

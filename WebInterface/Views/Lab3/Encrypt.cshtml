@@ -1,6 +1,6 @@
-@model RsaEncryptViewModel
+@model ElGamalEncryptViewModel
 <div class="forms">
-      <h2 class="header">Шифратор RSA</h2>
+      <h2 class="header">Шифратор Эль Гамаля</h2>
       <form method="post" asp-action="Encrypt">
             <div class="forms_field">
                   <label asp-for="Source">Исходная строка:</label>
@@ -13,9 +13,9 @@
       <h2 class="header">Результат</h2>
       <div class="message">
             @{
-                  IEnumerable<BigInteger>? cipher = (IEnumerable<BigInteger>?)ViewData["Cipher"];
-                  (BigInteger, BigInteger)? publicKey = ((BigInteger, BigInteger)?)ViewData["PublicKey"];
-                  (BigInteger, BigInteger)? privateKey = ((BigInteger, BigInteger)?)ViewData["PrivateKey"];
+                  var cipher = (IEnumerable<BigInteger>?)ViewData["Cipher"];
+                  var publicKey = ((BigInteger, BigInteger, BigInteger)?)ViewData["PublicKey"];
+                  var privateKey = ((BigInteger, BigInteger, BigInteger)?)ViewData["PrivateKey"];
             }
             @if(cipher != null && publicKey != null && privateKey != null)
             {
@@ -25,8 +25,8 @@
                         {
                               @(block.ToString() + ' ') 
                         }
-                        <br><b>Публичный ключ (e, n):</b> (@(publicKey!.Value.Item1), @(publicKey!.Value.Item2))
-                        <br><b>Приватный ключ (d, n):</b> (@(privateKey!.Value.Item1), @(privateKey!.Value.Item2))
+                        <br><b>Публичный ключ (p, y, k):</b> (@(publicKey!.Value.Item1), @(publicKey!.Value.Item2), @(publicKey!.Value.Item3))
+                        <br><b>Приватный ключ (p, x, r):</b> (@(privateKey!.Value.Item1), @(privateKey!.Value.Item2), @(privateKey!.Value.Item3))
                   </text>
             }           
       </div>

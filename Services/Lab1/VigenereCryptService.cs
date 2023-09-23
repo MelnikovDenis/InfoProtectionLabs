@@ -1,7 +1,6 @@
 using System.Text;
-using Lab1.Abstractions;
-namespace Lab1.Implementations;
-public class VigenereCryptService : ICryptService
+namespace Services.Lab1;
+public class VigenereCryptService
 {
       public const int AlphabetSize = 65536;
       public string Decrypt(string cipher, string key)

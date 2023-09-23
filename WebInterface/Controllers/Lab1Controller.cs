@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using WebInterface.Models.ViewModels;
-using Lab1.Abstractions;
+using Services.Lab1;
 
 namespace WebInterface.Controllers;
 
 public class Lab1Controller : Controller
 {
-      private ICryptService _cryptService { get; }
-      public Lab1Controller(ICryptService cryptService)
+      private VigenereCryptService _cryptService { get; }
+      public Lab1Controller(VigenereCryptService cryptService)
       {
             _cryptService = cryptService;
       }
@@ -17,13 +17,13 @@ public class Lab1Controller : Controller
       [HttpGet]
       public IActionResult Decrypt() => View();
       [HttpPost]
-      public IActionResult Encrypt(CryptViewModel viewModel)
+      public IActionResult Encrypt(VigenereCryptViewModel viewModel)
       {
             ViewData["Message"] = _cryptService.Encrypt(viewModel.Source, viewModel.Key);
             return View();
       }
       [HttpPost]
-      public IActionResult Decrypt(CryptViewModel viewModel)
+      public IActionResult Decrypt(VigenereCryptViewModel viewModel)
       {
             ViewData["Message"] =  _cryptService.Decrypt(viewModel.Source, viewModel.Key);
             return View();

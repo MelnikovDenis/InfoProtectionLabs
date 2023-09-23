@@ -1,4 +1,4 @@
-@model CryptViewModel
+@model VigenereCryptViewModel
 <div class="forms">
       <h2 class="header">Дешифратор Вижинера</h2>
       <form method="post" asp-action="Decrypt">
@@ -14,8 +14,8 @@
                   <button type="submit">Расшифровать</button>
             </div>  
       </form>
+      <h2 class="header">Результат</h2>
       <div class="message">
-            Расшифрованное сообщение:<br>
             @ViewData["Message"]
       </div>
 </div>

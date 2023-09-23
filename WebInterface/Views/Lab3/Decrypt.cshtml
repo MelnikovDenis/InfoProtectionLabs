@@ -1,18 +1,22 @@
-@model RsaDecryptViewModel
+@model ElGamalDecryptViewModel
 <div class="forms">
-      <h2 class="header">Дешифратор RSA</h2>
+      <h2 class="header">Дешифратор Эль Гамаля</h2>
       <form method="post" asp-action="Decrypt">
             <div class="forms_field">
                   <label asp-for="Cipher">Зашифрованая строка:</label>
                   <input asp-for="Cipher" />
             </div>
             <div class="forms_field">
-                  <label asp-for="d">d:</label>
-                  <input asp-for="d" />
+                  <label asp-for="p">p:</label>
+                  <input asp-for="p" />
             </div>
             <div class="forms_field">
-                  <label asp-for="n">n:</label>
-                  <input asp-for="n" />
+                  <label asp-for="x">x:</label>
+                  <input asp-for="x" />
+            </div>
+            <div class="forms_field">
+                  <label asp-for="r">r:</label>
+                  <input asp-for="r" />
             </div>
             <div class="forms_field">
                   <button type="submit">Расшифровать</button>

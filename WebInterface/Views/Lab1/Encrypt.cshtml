@@ -1,4 +1,4 @@
-@model CryptViewModel
+@model VigenereCryptViewModel
 <div class="forms">
       <h2 class="header">Шифратор Вижинера</h2>
       <form method="post" asp-action="Encrypt">
@@ -14,8 +14,9 @@
                   <button type="submit">Зашифровать</button>
             </div>    
       </form>
+      <h2 class="header">Результат</h2>
       <div class="message">
-            Зашифрованное сообщение:<br>
+            <b>Зашифрованное сообщение:</b>
             @ViewData["Message"]
       </div>
 </div>
