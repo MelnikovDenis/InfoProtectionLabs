@@ -3,7 +3,8 @@ using Services.Lab4;
 using Services.Static;
 
 var source = new BitArray(new bool[]{false, false, true, false, true, false, false, true, true, true, true, true,
-false, false, true, true, true, true, true, false, false, true, false, true});
+false, false, true, true, true, true, true, false, false, true, false, true
+});
 var key = new BitArray(new bool[]{false, false, true, true, true, true, true, false, false, true, false, true});
 var des = new DesCryptService();
 des.LogTo = Console.WriteLine;

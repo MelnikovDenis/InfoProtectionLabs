@@ -17,8 +17,8 @@ public class DesCryptService
       /// <summary>
       /// Паттерн битовых сдвигов ключа для каждого раунда шифрования (для 16 раундов)
       /// </summary>
-      //public static int[] ShiftPattern { get; } = new int[]{1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
-      public static int[] ShiftPattern { get; } = new int[]{1};
+      public static int[] ShiftPattern { get; } = new int[]{1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
+      //public static int[] ShiftPattern { get; } = new int[]{1, 1};
       /// <summary>
       /// Паттерн расширения 6 битовой половины блока до 12 бит (не подойдёт для другого размера блока)
       /// </summary>
@@ -78,16 +78,16 @@ public class DesCryptService
             foreach(var shift in ShiftPattern.Reverse())
             {
                   LogTo?.Invoke($"Ключ текущего раунда: {curKey.BitArrayToString()}");
-                  //шифруем каждый блок
+                  //Дешифруем каждый блок
                   for(int i = 0; i < subblocks.Count; ++i)
                   {
                         LogTo?.Invoke($"L: {subblocks[i].Item2.BitArrayToString()}, R: {subblocks[i].Item1.BitArrayToString()}");
-                        subblocks[i] = EncryptRound((subblocks[i].Item2, subblocks[i].Item1), curKey);
+                        subblocks[i] = DecryptRound((subblocks[i].Item1, subblocks[i].Item2), curKey);
                         LogTo?.Invoke($"R-1: {subblocks[i].Item2.BitArrayToString()}, L-1: {subblocks[i].Item1.BitArrayToString()}\n");
                   }
                   curKey = curKey.CycleShift(shift * -1);
             }
-            return subblocks.Select(sb => BitArrayExtension.Compound((sb.Item2, sb.Item1))).Aggregate((BitArray b1, BitArray b2) => 
+            return subblocks.Select(sb => BitArrayExtension.Compound(sb)).Aggregate((BitArray b1, BitArray b2) => 
                   BitArrayExtension.Compound((b1, b2)));            
       }
       public DesCryptService()
@@ -115,7 +115,27 @@ public class DesCryptService
             //меняем местами
             return (LR.Item2, newR);
       }
-      
+      private (BitArray, BitArray) DecryptRound((BitArray, BitArray) LR, BitArray key)
+      {
+            //дополняем правую часть до 12 бит согласно паттерну
+            BitArray newL = Extension(LR.Item1, ExtensionPattern);             
+            LogTo?.Invoke($"Re: {newL.BitArrayToString()}");
+
+            //складываем правую часть с ключом по модулю 2
+            newL = newL.Xor(key);
+            LogTo?.Invoke($"Re xor key: {newL.BitArrayToString()}");
+
+            //сжимаем обратно до 6 бит
+            newL = SFunction(newL, SPattern);
+            LogTo?.Invoke($"sFunc(Re xor key): {newL.BitArrayToString()}");
+
+            //сложение по модулю 2 с левой частью
+            newL = LR.Item2.Xor(newL);
+            LogTo?.Invoke($"L xor sFunc(Re xor key): {newL.BitArrayToString()}");
+
+            //меняем местами
+            return (newL, LR.Item1);
+      }
       /// <summary>
       /// Метод расширения битового массива до определённой длины (длины переданного паттерна)
       /// </summary>
