@@ -1,0 +1,16 @@
+@model DesCryptViewModel
+<div class="forms">
+      <h2 class="header">Шифратор DES</h2>
+      <form method="post" asp-action="Encrypt" enctype="multipart/form-data">
+            <div class="forms_field">
+                  <label asp-for="Key">Ключ (16 бит):</label>
+                  <input asp-for="Key" />
+            </div>             
+            <div class="forms_field">
+                  <input type="file" asp-for="FormFile" name="sourceFile"/><br>
+            </div>
+            <div class="forms_field">
+                  <input type="submit" value="Зашифровать" />
+            </div>
+      </form>
+</div>

@@ -1,6 +1,7 @@
 using Services.Lab1;
 using Services.Lab2;
 using Services.Lab3;
+using Services.Lab4;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -8,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<VigenereCryptService, VigenereCryptService>();
 builder.Services.AddTransient<RsaCryptService, RsaCryptService>();
 builder.Services.AddTransient<ElGamalCryptService, ElGamalCryptService>();
+builder.Services.AddTransient<DesCryptService, DesCryptService>();
 
 var app = builder.Build();
 

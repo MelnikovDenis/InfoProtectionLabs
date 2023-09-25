@@ -13,13 +13,13 @@ public class DesCryptService
       /// <summary>
       /// Размер ключа в битах 
       /// </summary>
-      public static int KeySize {get; private set;} = 16;      
+      public static int KeySize {get; private set;} = 16;
       /// <summary>
       /// Паттерн битовых сдвигов ключа для каждого раунда шифрования (для 16 раундов)
       /// </summary>
       public static int[] ShiftPattern { get; } = new int[]{1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
       /// <summary>
-      /// Паттерн расширения 6 битовой половины блока до 12 бит (не подойдёт для другого размера блока)
+      /// Паттерн расширения 8 битовой половины блока до 16 бит (не подойдёт для другого размера блока)
       /// </summary>
       public static int[] ExtensionPattern { get; } = new int[] 
       { 
@@ -29,7 +29,7 @@ public class DesCryptService
             5, 6, 7, 0 
       };
       /// <summary>
-      /// Паттерн сжатия S функции (строка - первый и последний биты, столбец - второй и третий биты, результат - битовое представление ячейки)
+      /// Паттерн сжатия 4 бит в 2 для S функции(строка - первый и последний биты, столбец - второй и третий биты, результат - битовое представление ячейки)
       /// </summary>
       public static int[,] SPattern { get; } = 
       {
@@ -41,7 +41,7 @@ public class DesCryptService
       /// <summary>
       /// Количество блоков S функции сжатия
       /// </summary>
-      public static  int SBlockCount  {get; private set;} = 4;
+      public static  int SBlockCount  {get; } = 4;
       public BitArray Encrypt(BitArray source, BitArray key)
       {
             if(key.Length < KeySize)

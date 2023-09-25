@@ -142,4 +142,33 @@ public static class BitArrayExtension
             }
             return result.ToString();
       }
+      /// <summary>
+      /// Конвертирование битового массива в массив байт
+      /// </summary>
+      public static byte[] ConvertToByteArray(this BitArray bitArray)
+      {
+            // pack (in this case, using the first bool as the lsb - if you want
+            // the first bool as the msb, reverse things ;-p)
+            int bytes = (bitArray.Length + 7) / 8;
+            byte[] arr2 = new byte[bytes];
+            int bitIndex = 0;
+            int byteIndex = 0;
+
+            for (int i = 0; i < bitArray.Length; i++)
+            {
+                  if (bitArray[i])
+                  {
+                        arr2[byteIndex] |= (byte)(1 << bitIndex);
+                  }
+
+                  bitIndex++;
+                  if (bitIndex == 8)
+                  {
+                        bitIndex = 0;
+                        byteIndex++;
+                  }
+            }
+
+            return arr2;
+      }
 }
