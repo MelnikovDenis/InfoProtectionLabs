@@ -4,6 +4,7 @@ namespace Services.Static;
 
 public static class BigIntegerTextEncoding
 {
+      /// <summary>
       /// Разбиение строки на блоки из байт и преобразование блоков в числа BigInteger 
       /// </summary>
       /// <param name="source">Исходная строка</param>
@@ -18,6 +19,7 @@ public static class BigIntegerTextEncoding
                   result.Add(new BigInteger(byteBuffer.Skip(i * blockSize).Take(blockSize).ToArray()));
             return result;
       }
+      /// <summary>
       /// Преобразование BigInteger в байты и склеивание их в строку
       /// </summary>
       /// <param name="source">Исходный список чисел</param>
