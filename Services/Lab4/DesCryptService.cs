@@ -9,22 +9,27 @@ public class DesCryptService
       /// <summary>
       /// Размер блока в битах 
       /// </summary>
-      public static int BlockSize {get; private set;} = 12;
+      public static int BlockSize {get; private set;} = 16;
       /// <summary>
       /// Размер ключа в битах 
       /// </summary>
-      public static int KeySize {get; private set;} = 12;
+      public static int KeySize {get; private set;} = 16;      
       /// <summary>
       /// Паттерн битовых сдвигов ключа для каждого раунда шифрования (для 16 раундов)
       /// </summary>
       public static int[] ShiftPattern { get; } = new int[]{1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1};
-      //public static int[] ShiftPattern { get; } = new int[]{1, 1};
       /// <summary>
       /// Паттерн расширения 6 битовой половины блока до 12 бит (не подойдёт для другого размера блока)
       /// </summary>
-      public static int[] ExtensionPattern { get; } = new int[] { 5, 0, 1, 2, 1, 2, 3, 4, 3, 4, 5, 0 };
+      public static int[] ExtensionPattern { get; } = new int[] 
+      { 
+            7, 0, 1, 2, 
+            1, 2, 3, 4, 
+            3, 4, 5, 6, 
+            5, 6, 7, 0 
+      };
       /// <summary>
-      /// Паттерн сжатия (строка - первый и последний биты, столбец - второй и третий биты, результат - битовое представление ячейки)
+      /// Паттерн сжатия S функции (строка - первый и последний биты, столбец - второй и третий биты, результат - битовое представление ячейки)
       /// </summary>
       public static int[,] SPattern { get; } = 
       {
@@ -33,11 +38,18 @@ public class DesCryptService
             {1, 3, 0, 2},
             {1, 2, 0, 3}
       };
+      /// <summary>
+      /// Количество блоков S функции сжатия
+      /// </summary>
+      public static  int SBlockCount  {get; private set;} = 4;
       public BitArray Encrypt(BitArray source, BitArray key)
       {
+            if(key.Length < KeySize)
+                  throw new ArgumentException($"Длина ключа должна быть равна {KeySize}.");
             LogTo?.Invoke($"Исходный массив: {source.BitArrayToString()}");
             //разрезаем исходный массив бит на блоки
-            var blocks = source.BlockSplit(BlockSize);
+            var fullSource = source.AddExcessBits(BlockSize);
+            var blocks = fullSource.BlockSplit(BlockSize);
             LogTo?.Invoke($"Количество блоков: {blocks.Count()}");
 
             //делим каждый блок на полблоки LR
@@ -64,8 +76,8 @@ public class DesCryptService
                   BitArrayExtension.Compound((b1, b2)));            
       }
       public BitArray Decrypt(BitArray source, BitArray key)
-      {
-            LogTo?.Invoke($"Исходный шифр: {source.BitArrayToString()}");
+      {            
+            LogTo?.Invoke($"Исходный шифр: {source.BitArrayToString()}");            
             //разрезаем исходный массив бит на блоки
             var blocks = source.BlockSplit(BlockSize);
             LogTo?.Invoke($"Количество блоков: {blocks.Count()}");
@@ -88,7 +100,7 @@ public class DesCryptService
                   curKey = curKey.CycleShift(shift * -1);
             }
             return subblocks.Select(sb => BitArrayExtension.Compound(sb)).Aggregate((BitArray b1, BitArray b2) => 
-                  BitArrayExtension.Compound((b1, b2)));            
+                  BitArrayExtension.Compound((b1, b2))).RemoveExcessBits();            
       }
       public DesCryptService()
       {
@@ -119,19 +131,19 @@ public class DesCryptService
       {
             //дополняем правую часть до 12 бит согласно паттерну
             BitArray newL = Extension(LR.Item1, ExtensionPattern);             
-            LogTo?.Invoke($"Re: {newL.BitArrayToString()}");
+            LogTo?.Invoke($"Le: {newL.BitArrayToString()}");
 
             //складываем правую часть с ключом по модулю 2
             newL = newL.Xor(key);
-            LogTo?.Invoke($"Re xor key: {newL.BitArrayToString()}");
+            LogTo?.Invoke($"Le xor key: {newL.BitArrayToString()}");
 
             //сжимаем обратно до 6 бит
             newL = SFunction(newL, SPattern);
-            LogTo?.Invoke($"sFunc(Re xor key): {newL.BitArrayToString()}");
+            LogTo?.Invoke($"sFunc(Le xor key): {newL.BitArrayToString()}");
 
             //сложение по модулю 2 с левой частью
             newL = LR.Item2.Xor(newL);
-            LogTo?.Invoke($"L xor sFunc(Re xor key): {newL.BitArrayToString()}");
+            LogTo?.Invoke($"R xor sFunc(Le xor key): {newL.BitArrayToString()}");
 
             //меняем местами
             return (newL, LR.Item1);
@@ -147,7 +159,7 @@ public class DesCryptService
             return result;
       }
       /// <summary>
-      /// Метод сжатия подблоков из 4 бит до подблоков из 2 бит в 12 битной последовательности
+      /// Метод сжатия подблоков из 4 бит до подблоков из 2 бит      
       /// </summary>
       private static BitArray SFunction(BitArray source, int[,] sPattern)
       {
@@ -174,7 +186,7 @@ public class DesCryptService
                   }
             }
             var res = new BitArray(source.Length / 2);
-            for(int i = 0; i < 3; ++i)
+            for(int i = 0; i < SBlockCount; ++i)
             {                  
                   int row = ToInt(source[4 * i + 0], source[4 * i + 3]);
                   int col = ToInt(source[4 * i + 1], source[4 * i + 2]);

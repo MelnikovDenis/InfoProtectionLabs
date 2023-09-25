@@ -2,10 +2,22 @@
 using Services.Lab4;
 using Services.Static;
 
-var source = new BitArray(new bool[]{false, false, true, false, true, false, false, true, true, true, true, true,
-false, false, true, true, true, true, true, false, false, true, false, true
+var source = new BitArray(new bool[]
+{
+      true, false, true,
+      false, true, false, true, 
+      false, false, true, true, 
+      true, true, true, false, 
+      false, true, true, true, 
+      true, true, false, false      
 });
-var key = new BitArray(new bool[]{false, false, true, true, true, true, true, false, false, true, false, true});
+var key = new BitArray(new bool[]
+{
+      false, false, true, true, 
+      true, true, true, false, 
+      false, true, false, true,
+      true, true, true, false
+});
 var des = new DesCryptService();
 des.LogTo = Console.WriteLine;
 Console.WriteLine("-----ШИФРОВКА-----");
