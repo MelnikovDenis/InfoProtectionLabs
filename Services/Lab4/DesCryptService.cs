@@ -56,7 +56,7 @@ public class DesCryptService
             var subblocks = blocks.Select(b => b.Bisection()).ToList();
 
             LogTo?.Invoke($"Исходный ключ: {key.BitArrayToString()}\n");
-            BitArray curKey = new BitArray(key);
+            var curKey = new BitArray(key);
             //16 раундов шифрования
             foreach(var shift in ShiftPattern)
             {
@@ -176,15 +176,15 @@ public class DesCryptService
             //число в 2 бита
             (bool, bool) ToBit(int num)
             {
-                  switch(num)
-                  {
-                        case 0: return (false, false);
-                        case 1: return (false, true);
-                        case 2: return (true, false);
-                        case 3: return (true, true);
-                        default: throw new ArgumentException("Число больше чем двухбитное.");
-                  }
-            }
+            return num switch
+            {
+                0 => (false, false),
+                1 => (false, true),
+                2 => (true, false),
+                3 => (true, true),
+                _ => throw new ArgumentException("Число больше чем двухбитное."),
+            };
+        }
             var res = new BitArray(source.Length / 2);
             for(int i = 0; i < SBlockCount; ++i)
             {                  

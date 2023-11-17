@@ -9,6 +9,7 @@ public class ElGamalTest
       public void ElGamalEncryptDecryptTest()
       {
             var elGamal = new ElGamalCryptService();
+            elGamal.GenerateParameters();
             var number = BigInteger.Parse("12321421521521");
             var cipher = ElGamalCryptService.Encrypt(number, elGamal.PublicKey);
             Assert.AreEqual(number, ElGamalCryptService.Decrypt(cipher, elGamal.PrivateKey));            

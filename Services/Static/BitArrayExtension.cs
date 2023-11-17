@@ -13,7 +13,7 @@ public static class BitArrayExtension
       {
             var res = new bool[source.Length];
             if(Math.Abs(shift) > source.Length)
-                  shift = shift % source.Length;
+                  shift %= source.Length;
             if(shift == 0)
             {
                   source.CopyTo(res, 0);
@@ -147,8 +147,6 @@ public static class BitArrayExtension
       /// </summary>
       public static byte[] ConvertToByteArray(this BitArray bitArray)
       {
-            // pack (in this case, using the first bool as the lsb - if you want
-            // the first bool as the msb, reverse things ;-p)
             int bytes = (bitArray.Length + 7) / 8;
             byte[] arr2 = new byte[bytes];
             int bitIndex = 0;

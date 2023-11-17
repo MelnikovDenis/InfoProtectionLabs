@@ -1,7 +1,22 @@
-﻿using System.Collections;
-using Services.Lab4;
+﻿using Services.Lab6;
 using Services.Static;
+using System.Text;
 
+var sourceString = "abobaы5цув4ка5епгинртошьщлбез2дю1еапшо9-4с124сб9012г2,3195b,12b6230b8m41.2c4i12,0m41v8";
+var source = Encoding.Unicode.GetBytes(sourceString);
+var sourceStream = new MemoryStream(source);
+var sr0 = new StreamReader(sourceStream, Encoding.Unicode);
+Console.WriteLine($"Исходная строка: {sr0.ReadToEnd()}");
+var hc = new HuffmanCompression();
+var compressedStream = hc.Compress(sourceStream);
+var decompressedStream = hc.Decompress(compressedStream);
+Console.WriteLine($"Длина исходного потока: {sourceStream.Length}");
+Console.WriteLine($"Длина сжатого потока: {compressedStream.Length}");
+Console.WriteLine($"Длина разжатого потока: {decompressedStream.Length}");
+var sr = new StreamReader(decompressedStream, Encoding.Unicode);
+Console.WriteLine($"Декодированная строка: {sr.ReadToEnd()}");
+
+/* ТЕСТ 4 ЛАБЫ
 var source = new BitArray(new bool[]
 {
       true, false, true,
@@ -37,3 +52,4 @@ static bool isSuccess(BitArray source, BitArray dec)
                   flag = false;
       return flag;
 }
+*/

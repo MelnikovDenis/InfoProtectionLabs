@@ -5,7 +5,7 @@ namespace Test;
 [TestClass]
 public class PrimeTestTest
 {
-      private Random rnd { get; set; } = new Random();
+      private Random Rnd { get; set; } = new Random();
       [TestMethod]
       public void FermatTestTrueTest()
       {
@@ -28,7 +28,7 @@ public class PrimeTestTest
             };
             foreach (var primeNumber in primeNumbers)
             {
-                  Assert.IsTrue(PrimeTests.FermatTest(rnd, primeNumber));
+                  Assert.IsTrue(PrimeTests.FermatTest(Rnd, primeNumber));
             }       
       }
       [TestMethod]
@@ -51,7 +51,7 @@ public class PrimeTestTest
             };
             foreach (var primeNumber in primeNumbers)
             {
-                  Assert.IsFalse(PrimeTests.FermatTest(rnd, primeNumber));
+                  Assert.IsFalse(PrimeTests.FermatTest(Rnd, primeNumber));
             }       
       }
      
