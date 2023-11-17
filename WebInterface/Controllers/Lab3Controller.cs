@@ -7,10 +7,10 @@ namespace WebInterface.Controllers;
 
 public class Lab3Controller : Controller
 {
-      private ElGamalCryptService _cryptService { get; }
+      private ElGamalCryptService CryptService { get; }
       public Lab3Controller(ElGamalCryptService cryptService)
       {
-            _cryptService = cryptService;
+            CryptService = cryptService;
       }
       
       [HttpGet]
@@ -20,10 +20,10 @@ public class Lab3Controller : Controller
       [HttpPost]
       public IActionResult Encrypt(ElGamalEncryptViewModel viewModel)
       {
-            _cryptService.GenerateParameters();
-            ViewData["Cipher"] = ElGamalCryptService.Encrypt(viewModel.Source, _cryptService.PublicKey);
-            ViewData["PublicKey"] = _cryptService.PublicKey;
-            ViewData["PrivateKey"] = _cryptService.PrivateKey;
+            CryptService.GenerateParameters();
+            ViewData["Cipher"] = ElGamalCryptService.Encrypt(viewModel.Source, CryptService.PublicKey);
+            ViewData["PublicKey"] = CryptService.PublicKey;
+            ViewData["PrivateKey"] = CryptService.PrivateKey;
             return View();
       }
       

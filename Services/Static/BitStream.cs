@@ -2,13 +2,12 @@
 
 public class BitStream
 {
-    private const byte _zero = (byte)0b00000000; //0
     private const byte _one = (byte)0b00000001; //1
     private const byte _max = (byte)0b10000000; //255
     public byte Buffer { get; set; } = _one; //битовый буфер
     private int BufferBitCount { get => 7 - ReverseMarkerPosition; } //количество бит в буфере
     private int ReverseMarkerPosition { get; set; } = 7; //положение единички отделяющей пустые биты в буфере, от значащих (отсчёт от старшего разряда)
-    public int CompleteByteLength { get => Storage.Count(); } //количество полных байт
+    public int CompleteByteLength { get => Storage.Count; } //количество полных байт
     public int BitLength { get => CompleteByteLength * 8 + BufferBitCount; } //количество установленных бит вместе с битами в буфере
     public int ByteLength { get => BufferBitCount == 0 ? CompleteByteLength : CompleteByteLength + 1; } //количество байт вместе с буфером
     public int AbsoluteBitPosition { get; private set; } = 0; //текущий читаемый бит
@@ -64,7 +63,7 @@ public class BitStream
         int localBytePostition = AbsoluteBitPosition / 8;
         int localBitPosition = AbsoluteBitPosition % 8;
         bool result;
-        if (localBytePostition < Storage.Count())
+        if (localBytePostition < Storage.Count)
             result = GetBitReverseIndex(Storage[localBytePostition], localBitPosition);
         else
             result = GetBitReverseIndex(Buffer, ReverseMarkerPosition + localBitPosition + 1);

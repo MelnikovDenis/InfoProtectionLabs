@@ -9,10 +9,10 @@ namespace WebInterface.Controllers;
 
 public class Lab4Controller : Controller
 {
-      private DesCryptService _cryptService { get; }
+      private DesCryptService CryptService { get; }
       public Lab4Controller(DesCryptService cryptService)
       {
-            _cryptService = cryptService;
+            CryptService = cryptService;
       }
       
       [HttpGet]
@@ -22,7 +22,7 @@ public class Lab4Controller : Controller
       [HttpPost]
       public FileContentResult Encrypt(DesCryptViewModel viewModel)
       {                        
-            BitArray encrypted = _cryptService.Encrypt(FormFileToBitArray(viewModel.FormFile), KeyParse(viewModel.Key));    
+            BitArray encrypted = CryptService.Encrypt(FormFileToBitArray(viewModel.FormFile), KeyParse(viewModel.Key));    
 
             return File(encrypted.ConvertToByteArray(), MediaTypeNames.Application.Octet, $"encryption");
       }
@@ -30,7 +30,7 @@ public class Lab4Controller : Controller
       [HttpPost]
       public FileContentResult Decrypt(DesCryptViewModel viewModel)
       {
-            BitArray decrypted = _cryptService.Decrypt(FormFileToBitArray(viewModel.FormFile), KeyParse(viewModel.Key));
+            BitArray decrypted = CryptService.Decrypt(FormFileToBitArray(viewModel.FormFile), KeyParse(viewModel.Key));
             return File(decrypted.ConvertToByteArray(), MediaTypeNames.Application.Octet, $"decryption");  
       }
       [NonAction]
@@ -38,13 +38,11 @@ public class Lab4Controller : Controller
       {
             if(formFile != null)
             {
-                  using (var stream = formFile.OpenReadStream())
-                  {
-                        var byteBuffer = new byte[stream.Length];
-                        stream.Read(byteBuffer);
-                        var bitBuffer = new BitArray(byteBuffer);
-                       return bitBuffer;
-                  }
+                using var stream = formFile.OpenReadStream();
+                var byteBuffer = new byte[stream.Length];
+                stream.Read(byteBuffer);
+                var bitBuffer = new BitArray(byteBuffer);
+                return bitBuffer;
             }
             else
             {

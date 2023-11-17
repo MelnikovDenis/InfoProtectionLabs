@@ -5,7 +5,7 @@ namespace Test;
 [TestClass]
 public class RandomBigIntegerGeneratorTest
 {
-    private Random rnd { get; set; } = new Random();
+    private Random Rnd { get; set; } = new Random();
     [TestMethod]
     public void NextBigIntegerTest()
     {
@@ -13,7 +13,7 @@ public class RandomBigIntegerGeneratorTest
         var max = BigInteger.Parse("10000000000000");
         for(int i = 0; i < 10; ++i)
         {
-            var value = rnd.NextBigInteger(min, max);
+            var value = Rnd.NextBigInteger(min, max);
             var digits = value.ToString().Length;
             Assert.AreEqual(digits, 13);
         }
@@ -23,7 +23,7 @@ public class RandomBigIntegerGeneratorTest
     {
         for(int i = 0; i < 10; ++i)
         {
-            var value = rnd.GetRandomPrime(20);
+            var value = Rnd.GetRandomPrime(20);
             int digits = value.ToString().Length;
             Assert.AreEqual(digits, 20);
         }
