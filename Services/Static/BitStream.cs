@@ -113,4 +113,11 @@ public class BitStream
         else
             source &= (byte)~operand;
     }
+    public static bool[] ByteToBoolArray(byte source) 
+    {
+        var result = new bool[8];
+        for (int i = 0; i < 8; ++i)
+            result[i] = GetBit(source, i);
+        return result;
+    }
 }
