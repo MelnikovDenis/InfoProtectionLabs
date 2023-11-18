@@ -60,7 +60,7 @@ public class RsaCryptService
     /// </summary>
     public void GenerateParameters()
     {
-        Random rnd = new Random();
+        var rnd = new Random();
         BigInteger p = rnd.GetRandomPrime();
         BigInteger q = rnd.GetRandomPrime();
         BigInteger n = p * q;

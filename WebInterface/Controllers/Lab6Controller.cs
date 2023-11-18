@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Services.Lab6;
-using System.Collections;
 using System.Net.Mime;
 
 namespace WebInterface.Controllers;
@@ -40,11 +38,11 @@ public class Lab6Controller : Controller
         if (formFile != null)
         {
             using var stream = formFile.OpenReadStream();
-            var huffmanDecompressedStream = HuffmanCompression.Decompress(stream);
+            using var huffmanDecompressedStream = HuffmanCompression.Decompress(stream);
             using var lswDecompressedStream = LzwCompression.Decompress(huffmanDecompressedStream);            
             var buffer = new byte[lswDecompressedStream.Length];
             lswDecompressedStream.Read(buffer, 0, buffer.Length);
-            return File(buffer, MediaTypeNames.Application.Octet, $"decompressed");
+            return File(buffer, MediaTypeNames.Application.Octet, $"decompressed");            
         }
         else
         {

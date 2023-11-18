@@ -9,6 +9,7 @@ var sr0 = new StreamReader(sourceStream, Encoding.Unicode);
 Console.WriteLine($"Исходная строка: {sr0.ReadToEnd()}");
 
 var hc = new HuffmanCompression();
+hc.LogTo = Console.Write;
 var compressedStream = hc.Compress(LzwCompression.Compress(sourceStream));
 var decompressedStream = LzwCompression.Decompress(hc.Decompress(compressedStream));
 var sr = new StreamReader(decompressedStream, Encoding.Unicode);

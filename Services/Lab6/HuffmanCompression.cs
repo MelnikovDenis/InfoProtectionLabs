@@ -2,11 +2,14 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Reflection;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Services.Lab6;
 
 public class HuffmanCompression
 {
+    public Action<string>? LogTo { get; set; } = null;
     public Dictionary<byte, bool[]> HuffmanDictionary { get; } = new Dictionary<byte, bool[]>(256);
     private Node Root { get; set; } = null!;
     class Node 
@@ -51,6 +54,20 @@ public class HuffmanCompression
         Root = priorityQueue.Dequeue();
         GetNewHuffmannDictionary(Root, new LinkedList<bool>());
 
+        if(LogTo != null)
+        {
+            LogTo("Словарь Хаффмана:\n");
+            foreach (var kvp in HuffmanDictionary)
+            {
+                LogTo($"Ключ: {kvp.Key}\tКод: ");
+                foreach (bool bit in kvp.Value)
+                {
+                    LogTo($"{(bit ? 1 : 0)}");
+                }
+                LogTo($"\n");
+            }
+        }
+        
         //кодирование и вывод в поток
         var bitStream = new BitStream();        
         foreach (var curByte in buffer) 

@@ -7,10 +7,10 @@ namespace WebInterface.Controllers;
 
 public class Lab2Controller : Controller
 {
-      private RsaCryptService _cryptService { get; }
+      private RsaCryptService CryptService { get; }
       public Lab2Controller(RsaCryptService cryptService)
       {
-            _cryptService = cryptService;
+            CryptService = cryptService;
       }
       
       [HttpGet]
@@ -20,10 +20,10 @@ public class Lab2Controller : Controller
       [HttpPost]
       public IActionResult Encrypt(RsaEncryptViewModel viewModel)
       {
-            _cryptService.GenerateParameters();
-            ViewData["Cipher"] = RsaCryptService.Encrypt(viewModel.Source, _cryptService.PublicKey);
-            ViewData["PublicKey"] = _cryptService.PublicKey;
-            ViewData["PrivateKey"] = _cryptService.PrivateKey;
+            CryptService.GenerateParameters();
+            ViewData["Cipher"] = RsaCryptService.Encrypt(viewModel.Source, CryptService.PublicKey);
+            ViewData["PublicKey"] = CryptService.PublicKey;
+            ViewData["PrivateKey"] = CryptService.PrivateKey;
             return View();
       }
       

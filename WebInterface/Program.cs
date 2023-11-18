@@ -21,5 +21,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Lab1}/{action=Encrypt}/{id?}"
 );
-
 app.Run();

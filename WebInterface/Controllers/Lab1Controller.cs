@@ -6,10 +6,10 @@ namespace WebInterface.Controllers;
 
 public class Lab1Controller : Controller
 {
-      private VigenereCryptService _cryptService { get; }
+      private VigenereCryptService CryptService { get; }
       public Lab1Controller(VigenereCryptService cryptService)
       {
-            _cryptService = cryptService;
+            CryptService = cryptService;
       }
 
       [HttpGet]
@@ -19,13 +19,13 @@ public class Lab1Controller : Controller
       [HttpPost]
       public IActionResult Encrypt(VigenereCryptViewModel viewModel)
       {
-            ViewData["Message"] = _cryptService.Encrypt(viewModel.Source, viewModel.Key);
+            ViewData["Message"] = CryptService.Encrypt(viewModel.Source, viewModel.Key);
             return View();
       }
       [HttpPost]
       public IActionResult Decrypt(VigenereCryptViewModel viewModel)
       {
-            ViewData["Message"] =  _cryptService.Decrypt(viewModel.Source, viewModel.Key);
+            ViewData["Message"] =  CryptService.Decrypt(viewModel.Source, viewModel.Key);
             return View();
       }
 }
