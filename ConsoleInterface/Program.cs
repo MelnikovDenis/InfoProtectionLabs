@@ -2,30 +2,21 @@
 using Services.Static;
 using System.Text;
 
-var sourceString = "123ABOBAaboba123";
-var source = Encoding.Unicode.GetBytes(sourceString);
-var sourceStream = new MemoryStream(source);
-var sr0 = new StreamReader(sourceStream, Encoding.ASCII);
+var sourceString = "съешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаю";
+var sourceBuffer = Encoding.Unicode.GetBytes(sourceString);
+var sourceStream = new MemoryStream(sourceBuffer);
+var sr0 = new StreamReader(sourceStream, Encoding.Unicode);
 Console.WriteLine($"Исходная строка: {sr0.ReadToEnd()}");
+
 var hc = new HuffmanCompression();
-var compressedStream = hc.Compress(sourceStream);
-var decompressedStream = hc.Decompress(compressedStream);
-Console.WriteLine($"Длина исходного потока: {sourceStream.Length}");
-Console.WriteLine($"Длина сжатого потока: {compressedStream.Length}");
-Console.WriteLine($"Длина разжатого потока: {decompressedStream.Length}");
-var sr = new StreamReader(decompressedStream, Encoding.ASCII);
-Console.WriteLine($"Декодированная строка: {sr.ReadToEnd()}");
-
-
-sourceStream.Position = 0;
-compressedStream = LzwCompression.Compress(sourceStream);
-decompressedStream = LzwCompression.Decompress(compressedStream);
-decompressedStream.Position = 0;
-sr = new StreamReader(decompressedStream, Encoding.ASCII);
+var compressedStream = LzwCompression.Compress(hc.Compress(sourceStream));
+var decompressedStream = hc.Decompress(LzwCompression.Decompress(compressedStream));
+var sr = new StreamReader(decompressedStream, Encoding.Unicode);
 Console.WriteLine($"\n\nДлина исходного потока: {sourceStream.Length}");
 Console.WriteLine($"Длина сжатого потока: {compressedStream.Length}");
 Console.WriteLine($"Длина разжатого потока: {decompressedStream.Length}");
 Console.WriteLine($"Декодированная строка: {sr.ReadToEnd()}");
+
 /* ТЕСТ 4 ЛАБЫ
 var source = new BitArray(new bool[]
 {

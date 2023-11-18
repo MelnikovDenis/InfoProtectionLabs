@@ -5,12 +5,11 @@ namespace Services.Lab6;
 public static class LzwCompression
 {
     public static Stream Compress(Stream source) 
-    {
-        Console.WriteLine($"\n\nДлина исходного потока: {source.Length}");        
+    {    
         //создаём словарь
         var dictSize = 256;
-        var lzwDictionary = new Dictionary<byte[], int>(dictSize * 4, new ArrayComparer());        
-        for (int i = 0; i < dictSize; ++i) 
+        var lzwDictionary = new Dictionary<byte[], short>(dictSize * 4, new ArrayComparer());        
+        for (short i = 0; i < dictSize; ++i) 
             lzwDictionary.Add(new byte[] { (byte)i }, i);
 
         var resultStream = new MemoryStream();
@@ -21,7 +20,7 @@ public static class LzwCompression
             var K = (byte)source.ReadByte();
             var inputPhraseK = inputPhrase.AsEnumerable().Append(K).ToArray();
             if (lzwDictionary.ContainsKey(inputPhraseK))
-            {
+            {                
                 inputPhrase.Clear();
                 inputPhrase.AddRange(inputPhraseK);
             }
@@ -35,7 +34,7 @@ public static class LzwCompression
                 {
                     throw new Exception("Error Encoding.");
                 }
-                lzwDictionary.Add(inputPhraseK, lzwDictionary.Count);
+                lzwDictionary.Add(inputPhraseK, (short)lzwDictionary.Count);
                 inputPhrase.Clear();
                 inputPhrase.Add(K);
             }
@@ -44,27 +43,25 @@ public static class LzwCompression
         {
             resultStream.Write(BitConverter.GetBytes(lzwDictionary[inputPhrase.ToArray()]));
         }
-        Console.WriteLine($"Длина сжатого потока: {resultStream.Length}");
         return resultStream;
     }
     public static Stream Decompress(Stream source) 
     {
-        Console.WriteLine($"Длина сжатого потока: {source.Length}");
         //создаём словарь
         var dictSize = 256;
-        var lzwDictionary = new Dictionary<int, byte[]>(dictSize * 4);
-        for (int i = 0; i < dictSize; ++i)
+        var lzwDictionary = new Dictionary<short, byte[]>(dictSize * 4);
+        for (short i = 0; i < dictSize; ++i)
             lzwDictionary.Add(i, new byte[] { (byte)i });
 
         var resultStream = new MemoryStream();
         source.Position = 0;
-        var K = ReadInt(source);
+        var K = ReadShort(source);
         var phrase = lzwDictionary[K];
         resultStream.Write(phrase.ToArray());
  
         while (source.Position < source.Length) 
         {
-            K = ReadInt(source);
+            K = ReadShort(source);
             var phraseK = new List<byte>();         
             if (lzwDictionary.ContainsKey(K))
                 phraseK.AddRange(lzwDictionary[K]);
@@ -74,18 +71,17 @@ public static class LzwCompression
             if(phraseK.Count > 0)
             {
                 resultStream.Write(phraseK.ToArray());
-                lzwDictionary.Add(lzwDictionary.Count, phrase.AsEnumerable().Append(phraseK[0]).ToArray());
+                lzwDictionary.Add((short)lzwDictionary.Count, phrase.AsEnumerable().Append(phraseK[0]).ToArray());
                 phrase = phraseK.ToArray();
             }
         }
-        Console.WriteLine($"Длина разжатого потока: {resultStream.Length}");
         return resultStream;
     }
-    private static int ReadInt(Stream source) 
+    private static short ReadShort(Stream source) 
     {
-        byte[] buffer = new byte[sizeof(int)];
+        byte[] buffer = new byte[sizeof(short)];
         source.Read(buffer, 0, buffer.Length);
-        return BitConverter.ToInt32(buffer, 0);
+        return BitConverter.ToInt16(buffer, 0);
     }
     private class ArrayComparer : IEqualityComparer<byte[]>
     {
