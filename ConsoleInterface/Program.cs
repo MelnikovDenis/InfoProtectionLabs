@@ -2,15 +2,15 @@
 using Services.Static;
 using System.Text;
 
-var sourceString = "съешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаюъешь же ещё этих мягких французских булок, да выпей чаю";
+var sourceString = "– Ну что, князь, Генуя и Лукка стали не больше как поместья, поместья фамилии Буонапарте. Нет, я вам вперед говорю, если вы мне не скажете, что у нас война, если вы позволите себе защищать все гадости, все ужасы этого антихриста (право, я верю, что он антихрист), – я вас больше не знаю, вы уже не друг мой, вы уже не мой верный раб, как вы говорите. Ну, здравствуйте, здравствуйте. Я вижу, что я вас пугаю, садитесь и рассказывайте.";
 var sourceBuffer = Encoding.Unicode.GetBytes(sourceString);
 var sourceStream = new MemoryStream(sourceBuffer);
 var sr0 = new StreamReader(sourceStream, Encoding.Unicode);
 Console.WriteLine($"Исходная строка: {sr0.ReadToEnd()}");
 
 var hc = new HuffmanCompression();
-var compressedStream = LzwCompression.Compress(hc.Compress(sourceStream));
-var decompressedStream = hc.Decompress(LzwCompression.Decompress(compressedStream));
+var compressedStream = hc.Compress(LzwCompression.Compress(sourceStream));
+var decompressedStream = LzwCompression.Decompress(hc.Decompress(compressedStream));
 var sr = new StreamReader(decompressedStream, Encoding.Unicode);
 Console.WriteLine($"\n\nДлина исходного потока: {sourceStream.Length}");
 Console.WriteLine($"Длина сжатого потока: {compressedStream.Length}");

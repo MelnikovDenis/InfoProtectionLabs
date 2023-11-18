@@ -75,6 +75,7 @@ public static class LzwCompression
                 phrase = phraseK.ToArray();
             }
         }
+        resultStream.Position = 0;
         return resultStream;
     }
     private static short ReadShort(Stream source) 

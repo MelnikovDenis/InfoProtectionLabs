@@ -28,7 +28,12 @@
                     <h3>Lab4</h3>
                     <div class="menu_item"><a asp-controller="Lab4" asp-action="Encrypt">Зашифровать файл с помощью DES</a></div>
                     <div class="menu_item"><a asp-controller="Lab4" asp-action="Decrypt">Расшифровать файл с помощью DES</a></div>
-                </div>                 
+                </div>
+                <div class=menu_group>
+                    <h3>Lab6</h3>
+                    <div class="menu_item"><a asp-controller="Lab6" asp-action="Encrypt">Сжать файл с помощью алгоритма Хаффмана + LZW</a></div>
+                    <div class="menu_item"><a asp-controller="Lab6" asp-action="Decrypt">Распаковать файл с помощью алгоритма Хаффмана + LZW</a></div>
+                </div>
             </div>
             @RenderBody()
         </div>        
