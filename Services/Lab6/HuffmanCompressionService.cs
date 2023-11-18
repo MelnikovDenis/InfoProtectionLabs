@@ -1,16 +1,10 @@
 ﻿using Services.Static;
-using System;
-using System.Collections;
-using System.IO;
-using System.Reflection;
-using static System.Reflection.Metadata.BlobBuilder;
-
 namespace Services.Lab6;
 
-public class HuffmanCompression
+public class HuffmanCompressionService
 {
     public Action<string>? LogTo { get; set; } = null;
-    public Dictionary<byte, bool[]> HuffmanDictionary { get; } = new Dictionary<byte, bool[]>(256);
+    public Dictionary<byte, bool[]> HuffmanDictionary { get; private set; } = new Dictionary<byte, bool[]>(256);
     private Node Root { get; set; } = null!;
     class Node 
     {
@@ -97,7 +91,11 @@ public class HuffmanCompression
         }
         resultStream.Position = 0;
         return resultStream;
-    }    
+    }   
+    public void ResetDictionary() 
+    {
+         HuffmanDictionary = new Dictionary<byte, bool[]>(256);
+    }
     private void GetNewHuffmannDictionary(Node root, IEnumerable<bool> bitCode)
     {
         if (root.Data != null)

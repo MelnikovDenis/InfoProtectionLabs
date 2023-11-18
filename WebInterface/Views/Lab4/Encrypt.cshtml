@@ -4,7 +4,7 @@
       <form method="post" asp-action="Encrypt" enctype="multipart/form-data">
             <div class="forms_field">
                   <label asp-for="Key">Ключ (16 бит):</label>
-                  <input asp-for="Key" />
+            <input asp-for="Key" minlength="16" maxlength="16" required />
             </div>             
             <div class="forms_field">
                   <input type="file" asp-for="FormFile" name="sourceFile"/><br>

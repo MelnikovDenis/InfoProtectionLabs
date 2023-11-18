@@ -1,24 +1,37 @@
-﻿using Services.Lab6;
+﻿using Services.Lab4;
+using Services.Lab6;
+using Services.Lab7;
 using Services.Static;
+using System.Collections;
 using System.Text;
 
-var sourceString = "– Ну что, князь, Генуя и Лукка стали не больше как поместья, поместья фамилии Буонапарте. Нет, я вам вперед говорю, если вы мне не скажете, что у нас война, если вы позволите себе защищать все гадости, все ужасы этого антихриста (право, я верю, что он антихрист), – я вас больше не знаю, вы уже не друг мой, вы уже не мой верный раб, как вы говорите. Ну, здравствуйте, здравствуйте. Я вижу, что я вас пугаю, садитесь и рассказывайте.";
+var desService = new DesCryptService();
+var hashService = new HashService(desService);
+var sourceString = "aboba12tgq12mwponji0g";
+var sourceSalt = hashService.GenerateSalt();
+var hash = hashService.Hash(sourceSalt, sourceString);
+
+Console.WriteLine($"Исходная строка: {sourceString}\nСоль: {sourceSalt}\nХэш: {hash}\n" +
+    $"Верифицирован: {hashService.VerifyPassword(sourceSalt, sourceString, hash)}");
+
+/*
+var sourceString = "wow123";
 var sourceBuffer = Encoding.Unicode.GetBytes(sourceString);
 var sourceStream = new MemoryStream(sourceBuffer);
 var sr0 = new StreamReader(sourceStream, Encoding.Unicode);
 Console.WriteLine($"Исходная строка: {sr0.ReadToEnd()}");
 
-var hc = new HuffmanCompression();
+var hc = new HuffmanCompressionService();
 hc.LogTo = Console.Write;
 var compressedStream = hc.Compress(LzwCompression.Compress(sourceStream));
 var decompressedStream = LzwCompression.Decompress(hc.Decompress(compressedStream));
 var sr = new StreamReader(decompressedStream, Encoding.Unicode);
-Console.WriteLine($"\n\nДлина исходного потока: {sourceStream.Length}");
+Console.WriteLine($"\nДлина исходного потока: {sourceStream.Length}");
 Console.WriteLine($"Длина сжатого потока: {compressedStream.Length}");
 Console.WriteLine($"Длина разжатого потока: {decompressedStream.Length}");
 Console.WriteLine($"Декодированная строка: {sr.ReadToEnd()}");
-
-/* ТЕСТ 4 ЛАБЫ
+*/
+ /*ТЕСТ 4 ЛАБЫ
 var source = new BitArray(new bool[]
 {
       true, false, true,
@@ -53,5 +66,4 @@ static bool isSuccess(BitArray source, BitArray dec)
             if(source[i] ^ dec[i])
                   flag = false;
       return flag;
-}
-*/
+}*/

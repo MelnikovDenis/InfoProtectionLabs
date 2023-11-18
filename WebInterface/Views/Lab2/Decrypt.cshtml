@@ -3,16 +3,16 @@
       <h2 class="header">Дешифратор RSA</h2>
       <form method="post" asp-action="Decrypt">
             <div class="forms_field">
-                  <label asp-for="Cipher">Зашифрованая строка:</label>
-                  <input asp-for="Cipher" />
+                <label asp-for="Cipher">Зашифрованая строка:</label>
+                <input asp-for="Cipher" required />
             </div>
             <div class="forms_field">
                   <label asp-for="d">d:</label>
-                  <input asp-for="d" />
+                <input asp-for="d" required />
             </div>
             <div class="forms_field">
                   <label asp-for="n">n:</label>
-                  <input asp-for="n" />
+                <input asp-for="n" required />
             </div>
             <div class="forms_field">
                   <button type="submit">Расшифровать</button>

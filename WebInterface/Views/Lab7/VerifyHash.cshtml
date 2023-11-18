@@ -1,0 +1,25 @@
+@model VerifyHashViewModel
+<div class="forms">
+    <h2 class="header">Верификация пароля</h2>
+    <form method="post" asp-action="VerifyHash">
+        <div class="forms_field">
+            <label asp-for="Hash">Хэш-код:</label>
+            <input asp-for="Hash" required />
+        </div>
+        <div class="forms_field">
+            <label asp-for="Salt">Соль:</label>
+            <input asp-for="Salt" required />
+        </div>
+        <div class="forms_field">
+            <label asp-for="Password">Пароль (8-24 символа):</label>
+            <input asp-for="Password" minlength="8" maxlength="24" required />
+        </div>
+        <div class="forms_field">
+                <input type="submit" value="Проверить" />
+        </div>
+    </form>
+    <div class="message">
+        <b>Пароль верен:</b>
+        @ViewData["isSuccess"]
+    </div>
+</div>

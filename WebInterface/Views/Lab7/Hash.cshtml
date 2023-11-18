@@ -1,0 +1,18 @@
+@model HashViewModel
+<div class="forms">
+    <h2 class="header">Хеширование</h2>
+    <form method="post" asp-action="Hash">
+        <div class="forms_field">
+            <label asp-for="Password">Пароль (8-24 символа):</label>
+            <input asp-for="Password" minlength="8" maxlength="24" required />
+        </div> 
+        <div class="forms_field">
+                <input type="submit" value="Хешировать" />
+        </div>
+    </form>
+    <h2 class="header">Результат</h2>
+    <div class="message">
+        <b>Хэш:</b> @ViewData["passwordHash"]
+        <br><b>Соль:</b> @ViewData["passwordSalt"]
+    </div>
+</div>

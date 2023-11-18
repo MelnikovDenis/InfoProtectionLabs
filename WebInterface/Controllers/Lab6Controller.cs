@@ -6,8 +6,8 @@ namespace WebInterface.Controllers;
 
 public class Lab6Controller : Controller
 {    
-    private HuffmanCompression HuffmanCompression { get; set; }
-    public Lab6Controller(HuffmanCompression huffmanCompression)
+    private HuffmanCompressionService HuffmanCompression { get; set; }
+    public Lab6Controller(HuffmanCompressionService huffmanCompression)
     {
         HuffmanCompression = huffmanCompression;
     }
@@ -20,6 +20,7 @@ public class Lab6Controller : Controller
     {
         if (formFile != null)
         {
+            HuffmanCompression.ResetDictionary();
             using var stream = formFile.OpenReadStream();
             using var lswCompressedStream = LzwCompression.Compress(stream);
             using var huffmanCompressedStream = HuffmanCompression.Compress(lswCompressedStream);
