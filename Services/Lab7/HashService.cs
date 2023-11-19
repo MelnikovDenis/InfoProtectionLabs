@@ -18,7 +18,7 @@ public class HashService
         var rnd = new Random();
         byte[] saltByteBuffer = new byte[saltLength];
         rnd.NextBytes(saltByteBuffer);
-        return Encoding.UTF8.GetString(saltByteBuffer);
+        return Encoding.Unicode.GetString(saltByteBuffer);
     }
     public string Hash(string salt, string password) 
     {
@@ -54,6 +54,6 @@ public class HashService
             knBuffer = Encoding.Unicode.GetBytes(password[i].ToString());
             knBitBuffer = new BitArray(knBuffer);
         }
-        return Encoding.UTF8.GetString(nBitBuffer.ConvertToByteArray());
+        return Encoding.Unicode.GetString(nBitBuffer.ConvertToByteArray());
     }
 }
