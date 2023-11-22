@@ -1,10 +1,24 @@
 ﻿using Services.Lab4;
 using Services.Lab6;
 using Services.Lab7;
+using Services.Lab8;
 using Services.Static;
 using System.Collections;
 using System.Text;
 
+var xorCipher = new XorCipherService();
+var sourceString = "1234567891231";
+var sourceBuffer = Encoding.Unicode.GetBytes(sourceString);
+var sourceStream = new MemoryStream(sourceBuffer);
+var gammaStream = xorCipher.GetGammaStream((int)sourceStream.Length);
+var encodedStream = xorCipher.Encode(gammaStream, sourceStream);
+var decodedStream = xorCipher.Decode(gammaStream, encodedStream);
+var sr = new StreamReader(decodedStream, Encoding.Unicode);
+Console.WriteLine($"\nДлина исходного потока: {sourceStream.Length}");
+Console.WriteLine($"Длина закодированного потока: {encodedStream.Length}");
+Console.WriteLine($"Длина раскодированного потока: {decodedStream.Length}");
+Console.WriteLine($"Декодированная строка: {sr.ReadToEnd()}");
+/*
 var desService = new DesCryptService();
 var hashService = new HashService(desService);
 var sourceString = "aboba12tgq12mwponji0g";
@@ -13,7 +27,7 @@ var hash = hashService.Hash(sourceSalt, sourceString);
 
 Console.WriteLine($"Исходная строка: {sourceString}\nСоль: {sourceSalt}\nХэш: {hash}\n" +
     $"Верифицирован: {hashService.VerifyPassword(sourceSalt, sourceString, hash)}");
-
+*/
 /*
 var sourceString = "wow123";
 var sourceBuffer = Encoding.Unicode.GetBytes(sourceString);
