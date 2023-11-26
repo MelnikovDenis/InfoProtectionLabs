@@ -5,43 +5,60 @@ namespace Services.Lab8;
 public class XorCipherService
 {
     public int BlockSize { get; set; } = 4; //размер блока для шифрования в байтах
-    //public BigInteger GammaKey { get; set; } = new BigInteger(31);
+    //получение гаммы из семени с помощью умножения по модулю
+    public Stream GetGammaStream(int sourceByteLength, int seed)
+    {
+        var buffer = new byte[BlockSize];
+        var rnd = new Random();
+        var gammaStream = new MemoryStream();
+        var gammaSeed = new BigInteger(seed);
+        var key = new BigInteger(1); 
+        var blockCount = (sourceByteLength / BlockSize) + 1;  
+        int byteWritten = 0;
+        for(int i = 0; i < blockCount; ++i)
+        {
+            key = key * gammaSeed % BigInteger.Pow(new BigInteger(2), blockCount);
+            key.TryWriteBytes(buffer, out byteWritten, false, false);
+            gammaStream.Write(buffer);
+        }
+        gammaStream.Position = 0;
+        return gammaStream;
+    }
+    //получение случайной гаммы
     public Stream GetGammaStream(int sourceByteLength)
     {
         var buffer = new byte[BlockSize];
         var rnd = new Random();
         var gammaStream = new MemoryStream();
         var blockCount = (sourceByteLength / BlockSize) + 1;    
-        //var key = new BigInteger(1);   
-        //int byteWritten = 0;
         for(int i = 0; i < blockCount; ++i)
         {
             rnd.NextBytes(buffer);
-            //генератор гаммы на основе умножения по модулю
-            //key = key * GammaKey % BigInteger.Pow(new BigInteger(2), blockCount); 
-            //key.TryWriteBytes(buffer, out byteWritten, false, false);
             gammaStream.Write(buffer);
         }
         gammaStream.Position = 0;
         return gammaStream;
     }
+    //расшифровка
     public Stream Encode(Stream gammaStream, Stream sourceStream)
     {
-        var enhancedStream = new MemoryStream();
+        
+        var enhancedStream = new MemoryStream(); //исходный поток дополненный байтами до целого числа блоков
         var excessBytesCount = BlockSize - ((int)sourceStream.Length % BlockSize);
         for(int i = 0; i < excessBytesCount - 1; ++i)
             enhancedStream.WriteByte(0);
         enhancedStream.WriteByte(1);
         sourceStream.CopyTo(enhancedStream);
-        enhancedStream.Position = 0;        
-        
+        enhancedStream.Position = 0;
 
+        //байтовые буферы для записи в потоки
         var sourceBuffer = new byte[BlockSize];
         var gammaBuffer = new byte[BlockSize];
         var resultBuffer = new byte[BlockSize];
-        var resultStream = new MemoryStream();
+        
+        var resultStream = new MemoryStream(); //результирующий поток
         var blockCount = enhancedStream.Length / BlockSize;
-        if(gammaStream.Length != enhancedStream.Length)
+        if(gammaStream.Length < enhancedStream.Length)
             throw new Exception($"gammaStream length must be {enhancedStream.Length}");
         int byteWritten = 0;
         for(int i = 0; i < blockCount; ++i)
@@ -54,27 +71,23 @@ public class XorCipherService
             resultNum.TryWriteBytes(resultBuffer, out byteWritten, false, false);
             resultStream.Write(resultBuffer);
         }
-
-        Console.WriteLine("Encode: ");
-        Display(gammaStream, "gammaStream");
-        Display(sourceStream, "sourceStream");
-        Display(enhancedStream, "enhancedStream");        
-        Display(resultStream, "resultStream");
-        Console.WriteLine();
-
+        //сброс позиций для чтения в потоках
         gammaStream.Position = 0;
         sourceStream.Position = 0;
         resultStream.Position = 0;
         return resultStream;
     }  
+    //дешифровка
     public Stream Decode(Stream gammaStream, Stream sourceStream)
     {
+        //байтовые буферы для записи в потоки
         var sourceBuffer = new byte[BlockSize];
         var gammaBuffer = new byte[BlockSize];
         var resultBuffer = new byte[BlockSize];
+        
         var resultStream = new MemoryStream();
         var blockCount = sourceStream.Length / BlockSize;
-        if(gammaStream.Length != sourceStream.Length)
+        if(gammaStream.Length < sourceStream.Length)
             throw new Exception($"gammaStream length must be {sourceStream.Length}");
         int byteWritten = 0;
         for(int i = 0; i < blockCount; ++i)
@@ -99,23 +112,10 @@ public class XorCipherService
             for(int j = 0; j < resultBuffer.Length; ++j)
                 resultBuffer[j] = 0;
         }
-        Console.WriteLine("Decode: ");
-        Display(gammaStream, "gammaStream");
-        Display(sourceStream, "sourceStream");        
-        Display(resultStream, "resultStream");
-        Console.WriteLine();
+        //сброс позиций для чтения в потоках
         gammaStream.Position = 0;
         sourceStream.Position = 0;
         resultStream.Position = 0;        
         return resultStream;
     }  
-    private void Display(Stream stream, string title)
-    {
-        stream.Position = 0;
-        Console.Write($"len={stream.Length} {title}: ");
-        for(int i = 0; i < stream.Length; ++i)
-            Console.Write($"{stream.ReadByte()} ");
-        Console.WriteLine();
-        stream.Position = 0;
-    }
 }

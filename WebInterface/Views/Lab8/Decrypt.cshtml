@@ -1,0 +1,14 @@
+<div class="forms">
+      <h2 class="header">Xor дешифрование</h2>
+      <form method="post" asp-action="Decrypt" enctype="multipart/form-data">           
+            <div class="forms_field">
+                <input type="file" name="sourceFile" required /><br>
+            </div>
+            <div class="forms_field">
+                <input type="number" name="seed" min="1" required /><br>
+            </div>
+            <div class="forms_field">
+                  <input type="submit" value="Дешифровать" />
+            </div>
+      </form>
+</div>

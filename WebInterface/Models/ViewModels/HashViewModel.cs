@@ -2,5 +2,5 @@
 
 public class HashViewModel
 {
-    public string Password { get; set; }
+    public string Password { get; set; } = null!;
 }
