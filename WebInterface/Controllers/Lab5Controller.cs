@@ -17,13 +17,14 @@ public class Lab5Controller : Controller
     [HttpGet]
     public IActionResult Decrypt() => View();
     [HttpPost]
-    public IActionResult Encrypt(string source) 
+    public IActionResult Encrypt([FromForm(Name = "source")] string source) 
     {
         var bSource = BitArrayExtension.ToBoolArray(source);
         ViewData["Message"] = CyclicCoding.Encode(bSource).BitArrayToString();
         return View();
     }
-    public IActionResult Decrypt(string source)
+     [HttpPost]
+    public IActionResult Decrypt([FromForm(Name = "source")] string source)
     {
         var bSource = BitArrayExtension.ToBitArray(source);
         ViewData["Message"] = CyclicCoding.Decode(bSource).BoolArrayToString();
