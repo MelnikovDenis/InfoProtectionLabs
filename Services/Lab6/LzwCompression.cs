@@ -8,12 +8,17 @@ public static class LzwCompression
     {    
         //создаём словарь
         var dictSize = 256;
-        var lzwDictionary = new Dictionary<byte[], short>(dictSize * 4, new ArrayComparer());        
+        //ключ - последовательность символов для замены 
+        //значение - то, на что мы будем заменять последовательность
+        var lzwDictionary = new Dictionary<byte[], short>(dictSize * 4, new ArrayComparer()); 
+
+        //заносим все одиночные последовательности в словарь
         for (short i = 0; i < dictSize; ++i) 
             lzwDictionary.Add(new byte[] { (byte)i }, i);
 
         var resultStream = new MemoryStream();
         source.Position = 0;
+
         var inputPhrase = new List<byte>();
         while (source.Position < source.Length) 
         {
@@ -32,7 +37,7 @@ public static class LzwCompression
                 }
                 else
                 {
-                    throw new Exception("Error Encoding.");
+                    throw new Exception("Error encoding.");
                 }
                 lzwDictionary.Add(inputPhraseK, (short)lzwDictionary.Count);
                 inputPhrase.Clear();

@@ -1,3 +1,4 @@
+using Services.Lab4;
 using System.Collections;
 using System.Text;
 namespace Services.Static;
@@ -16,8 +17,7 @@ public static class BitArrayExtension
                   shift %= source.Length;
             if(shift == 0)
             {
-                  source.CopyTo(res, 0);
-                 
+                  source.CopyTo(res, 0);                 
             }
             else if(shift > 0)
             {
@@ -142,10 +142,25 @@ public static class BitArrayExtension
             }
             return result.ToString();
       }
-      /// <summary>
-      /// Конвертирование битового массива в массив байт
-      /// </summary>
-      public static byte[] ConvertToByteArray(this BitArray bitArray)
+        /// <summary>
+        /// Конвертирование битового массива в строку (для логирования)
+        /// </summary>
+        public static string BoolArrayToString(this bool[] source)
+        {
+            var result = new StringBuilder();
+            for (int i = 0; i < source.Length; ++i)
+            {
+                if (source[i])
+                    result.Append('1');
+                else
+                    result.Append('0');
+            }
+            return result.ToString();
+        }
+        /// <summary>
+        /// Конвертирование битового массива в массив байт
+        /// </summary>
+        public static byte[] ConvertToByteArray(this BitArray bitArray)
       {
             int bytes = (bitArray.Length + 7) / 8;
             byte[] arr2 = new byte[bytes];
@@ -169,4 +184,57 @@ public static class BitArrayExtension
 
             return arr2;
       }
+    public static void Display(this BitArray source, string title) 
+    {
+        Console.Write($"{title}: ");
+        foreach(bool bit in source) 
+        {
+            Console.Write($"{(bit ? 1 : 0)} ");
+        }
+        Console.WriteLine();
+    }
+    public static bool BitArrayEquals(BitArray ba1, BitArray ba2)
+    {
+        bool flag = true;
+        for (int i = 0; i < ba2.Length; ++i)
+            if (ba1[i] ^ ba2[i])
+                flag = false;
+        return flag;
+    }
+    public static bool BoolArrayEquals(bool[] ba1, bool[] ba2)
+    {
+        bool flag = true;
+        for (int i = 0; i < ba2.Length; ++i)
+            if (ba1[i] ^ ba2[i])
+                flag = false;
+        return flag;
+    }
+    public static BitArray ToBitArray(string key)
+    {
+        var bitKey = new bool[key.Length];
+        for (int i = 0; i < key.Length; ++i)
+        {
+            if (key[i] == '0')
+                bitKey[i] = false;
+            else if (key[i] == '1')
+                bitKey[i] = true;
+            else
+                throw new ArgumentException($"Строка должга состоять только из символов 1 или 0");
+        }
+        return new BitArray(bitKey);
+    }
+    public static bool[] ToBoolArray(string key)
+    {
+        var bitKey = new bool[key.Length];
+        for (int i = 0; i < key.Length; ++i)
+        {
+            if (key[i] == '0')
+                bitKey[i] = false;
+            else if (key[i] == '1')
+                bitKey[i] = true;
+            else
+                throw new ArgumentException($"Строка должга состоять только из символов 1 или 0");
+        }
+        return bitKey;
+    }
 }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Lab6\" />
+    <Folder Include="Views\Lab5\" />
   </ItemGroup>
 
   <PropertyGroup>

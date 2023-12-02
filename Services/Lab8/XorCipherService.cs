@@ -4,12 +4,11 @@ namespace Services.Lab8;
 
 public class XorCipherService
 {
-    public int BlockSize { get; set; } = 4; //размер блока для шифрования в байтах
+    public int BlockSize { get; set; } = 6; //размер блока для шифрования в байтах
     //получение гаммы из семени с помощью умножения по модулю
     public Stream GetGammaStream(int sourceByteLength, int seed)
     {
         var buffer = new byte[BlockSize];
-        var rnd = new Random();
         var gammaStream = new MemoryStream();
         var gammaSeed = new BigInteger(seed);
         var key = new BigInteger(1); 
@@ -67,7 +66,7 @@ public class XorCipherService
             gammaStream.Read(gammaBuffer, 0, BlockSize);
             var sourceNum = new BigInteger(sourceBuffer);
             var gammaNum = new BigInteger(gammaBuffer);            
-            var resultNum = sourceNum ^ gammaNum;     
+            var resultNum = sourceNum ^ gammaNum;
             resultNum.TryWriteBytes(resultBuffer, out byteWritten, false, false);
             resultStream.Write(resultBuffer);
         }

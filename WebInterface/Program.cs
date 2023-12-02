@@ -2,6 +2,7 @@ using Services.Lab1;
 using Services.Lab2;
 using Services.Lab3;
 using Services.Lab4;
+using Services.Lab5;
 using Services.Lab6;
 using Services.Lab7;
 using Services.Lab8;
@@ -17,6 +18,7 @@ builder.Services.AddTransient<DesCryptService, DesCryptService>();
 builder.Services.AddSingleton<HuffmanCompressionService, HuffmanCompressionService>();
 builder.Services.AddTransient<HashService, HashService>();
 builder.Services.AddTransient<XorCipherService, XorCipherService>();
+builder.Services.AddSingleton<CyclicCoding, CyclicCoding>();
 var app = builder.Build();
 
 app.UseDeveloperExceptionPage();
